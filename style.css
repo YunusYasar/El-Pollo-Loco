@@ -1,9 +1,299 @@
+@font-face {
+   font-family: 'zabras';
+   src: url('fonts/zabars.ttf') format('truetype');
+}
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   background-image: url('img/5_background/desert.jpg');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   min-height: 100vh;
+   margin: 0;
+   font-family: 'zabras';
+}
+.gameContainer {
+   width: 720px;
+   height: 480px;
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   /* border: 3px solid #fff; */
+}
+#screen {
+   width: 100% !important;
+   /* height: 100% !important; */
+   display: block !important;
+}
+canvas {
+   background-color: black !important;
+   display: block;
+}
+#canvas-container {
+   position: relative !important;
+   width: 100% !important;
+   height: 100% !important;
+}
+#start-screen-container {
+   width: 100% !important;
+   height: 100% !important;
+   background-image: url('img/9_intro_outro_screens/start/startscreen_2.png');
+   background-repeat: no-repeat;
+   background-size: 100% 100%;
+   background-position: center;
+   display: flex;
+   justify-content: center;
+   align-items: end;
+   position: relative;
+}
+#end-screen-container {
+   width: 100%;
+   height: 100%;
+   background-image: url('img/9_intro_outro_screens/game_over/game over.png');
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: center;
+   display: flex;
+   justify-content: center;
+   align-items: end;
+   position: relative;
+}
+#you-lost-screen-container {
+   width: 100%;
+   height: 100%;
+   background-image: url('img/9_intro_outro_screens/game_over/you lost.png');
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: center;
+   display: flex;
+   justify-content: center;
+   align-items: end;
+   position: relative;
 }
 
-canvas {
-  background-color: black !important;
+#start-screen-container button {
+   font-family: 'zabras', Arial, Helvetica, sans-serif;
+   margin-bottom: 10px;
+   height: 40px;
+   width: 230px;
+   border-style: unset;
+   border: 3px solid #ca4c1e;
+   border-radius: 5px;
+   cursor: pointer;
+   background: rgb(255, 198, 33);
+   background: linear-gradient(180deg, rgba(255, 198, 33, 1) 0%, rgba(255, 220, 0, 1) 50%, rgba(255, 160, 0, 1) 100%);
+   color: black;
+   font-size: 32px;
+   transition: 0.1s;
+}
+#end-screen-container button {
+   font-family: 'zabras', Arial, Helvetica, sans-serif;
+   margin-bottom: 20px;
+   height: 40px;
+   width: 230px;
+   border-style: unset;
+   border: 3px solid #ca4c1e;
+   border-radius: 5px;
+   cursor: pointer;
+   background: rgb(255, 198, 33);
+   background: linear-gradient(180deg, rgba(255, 198, 33, 1) 0%, rgba(255, 220, 0, 1) 50%, rgba(255, 160, 0, 1) 100%);
+   color: black;
+   font-size: 32px;
+   transition: 0.1s;
+}
+#you-lost-screen-container button {
+   font-family: 'zabras', Arial, Helvetica, sans-serif;
+   margin-bottom: 20px;
+   height: 40px;
+   width: 230px;
+   border-style: unset;
+   border: 3px solid #ca4c1e;
+   border-radius: 5px;
+   cursor: pointer;
+   background: rgb(255, 198, 33);
+   background: linear-gradient(180deg, rgba(255, 198, 33, 1) 0%, rgba(255, 220, 0, 1) 50%, rgba(255, 160, 0, 1) 100%);
+   color: black;
+   font-size: 32px;
+   transition: 0.1s;
+}
+
+#start-screen-container img {
+   height: 50px;
+   position: absolute;
+   right: 5px;
+   bottom: 5px;
+   cursor: pointer;
+}
+
+#end-screen-container img {
+   height: 50px;
+   position: absolute;
+   right: 5px;
+   bottom: 5px;
+   cursor: pointer;
+}
+#you-lost-screen-container img {
+   height: 50px;
+   position: absolute;
+   right: 5px;
+   bottom: 5px;
+   cursor: pointer;
+}
+
+#start-screen-container img:hover {
+   height: 55px;
+}
+#you-lost-screen-container img:hover {
+   height: 55px;
+}
+#end-screen-container img:hover {
+   height: 55px;
+}
+
+.d-none {
+   display: none !important;
+}
+
+.keys {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 720px;
+   height: 50px;
+   color: #fff;
+   font-size: 25px;
+}
+.keys span {
+   display: flex;
+   align-items: center;
+}
+
+.full-btn {
+   width: 50px;
+   height: 50px;
+   cursor: pointer;
+}
+.audio-img {
+   width: 40px;
+   height: 40px;
+   margin-left: 30px;
+   cursor: pointer;
+}
+
+.turn-screen {
+   display: none;
+   position: absolute;
+   align-items: center;
+   justify-content: center;
+   width: 100vw !important;
+   min-height: 100vh;
+   backdrop-filter: blur(15px);
+   top: 0;
+   bottom: 0;
+}
+.turn-screen-text {
+   width: 250px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-family: 'zabras';
+   font-size: 2.4em;
+   text-align: center;
+   width: 70%;
+   padding: 25px;
+   background-color: orange;
+   border-radius: 5px;
+}
+
+.buttons {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   top: 5px;
+}
+
+#mobile-btns {
+   display: none;
+}
+
+#mobile-btns img {
+   height: 50px;
+}
+
+.mobile-btns-left {
+   position: absolute;
+   bottom: 1px;
+   left: 10px;
+}
+
+.mobile-btns-right {
+   position: absolute;
+   bottom: 1px;
+   right: 10px;
+}
+
+@media only screen and (max-width: 900px) {
+   #start-screen-container {
+      width: 100vw;
+      height: 100vh;
+   }
+   #end-screen-container {
+      width: 100vw;
+      height: 100vh;
+   }
+   #you-lost-screen-container {
+      width: 100vw;
+      height: 100vh;
+   }
+
+   #enter-fullscreen-img {
+      display: none;
+   }
+   #mobile-btns {
+      display: block;
+   }
+}
+@media only screen and (max-width: 720px) {
+   canvas {
+      width: 100%;
+   }
+   .gameContainer {
+      width: 100%;
+   }
+   .keys {
+      display: none !important;
+   }
+   #mobile-btns img {
+      height: 40px;
+   }
+
+   .mobile-btns-left {
+      position: absolute;
+      left: 10px;
+   }
+
+   .mobile-btns-right {
+      position: absolute;
+      right: 10px;
+   }
+}
+@media only screen and (max-width: 480px) {
+   .turn-screen {
+      display: flex;
+   }
+}
+
+@media only screen and (max-height: 480px) {
+   canvas {
+      height: 100vh;
+   }
+   .gameContainer {
+      height: 100vh;
+   }
 }

@@ -2,22 +2,24 @@
 <html lang="en">
    <head>
       <meta charset="UTF-8" />
-      <meta
-         name="viewport"
-         content="width=device-width, initial-scale=1.0"
-      />
-      <link
-         rel="stylesheet"
-         href="style.css"
-      />
-      <title>Document</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/pepe.png" type="image/x-icon" />
+      <link rel="stylesheet" href="style.css" />
+      <title>El Pollo Loco</title>
       <script src="models/drawable-object.class.js"></script>
       <script src="models/movable-object.class.js"></script>
       <script src="models/character.class.js"></script>
       <script src="models/chicken.class.js"></script>
+      <script src="models/chicken-small.class.js"></script>
       <script src="models/cloud.class.js"></script>
       <script src="models/background-object.class.js"></script>
+      <script src="models/status-bar-endboss.class.js"></script>
       <script src="models/status-bar.class.js"></script>
+      <script src="models/status-bar-bottle.class.js"></script>
+      <script src="models/status-bar-coin.class.js"></script>
+      <script src="models/bottles.class.js"></script>
+      <script src="models/coins.class.js"></script>
       <script src="models/world.class.js"></script>
       <script src="models/keyboard.class.js"></script>
       <script src="models/level.class.js"></script>
@@ -27,12 +29,44 @@
       <script src="js/game.js"></script>
    </head>
    <body onload="init()">
-      <h1>El pollo loco</h1>
-      <canvas
-         id="canvas"
-         width="720"
-         height="480"
-      >
-      </canvas>
+      <div id="gameContainer" class="gameContainer">
+         <!-- <div id="screen"></div> -->
+         <div id="start-screen-container">
+            <button class="btn-start" id="start-game-button" onclick="startGame()">START</button>
+         </div>
+         <div id="canvas-container" class="d-none">
+            <canvas id="canvas" width="720" height="480"> </canvas>
+         </div>
+         <div id="end-screen-container" class="d-none">
+            <button class="btn-start" id="start-game-button" onclick="startGame()">RESTART</button>
+         </div>
+         <div id="you-lost-screen-container" class="d-none">
+            <button class="btn-start" id="start-game-button" onclick="startGame()">RESTART</button>
+         </div>
+         <div class="turn-screen">
+            <div class="turn-screen-text">Bildschirm auf Querformat drehen!</div>
+         </div>
+         <div class="keys" id="keys">
+            <span><img style="padding-right: 5px" src="img/left_key.png" alt="left key" />Move left</span>
+            <span><img style="padding-right: 5px" src="img/right_key.png" alt="right key" />Move right</span>
+            <span><img style="padding-right: 5px" src="img/space_key.png" alt="space key" />Jump<br /></span>
+            <span><img style="padding-right: 5px" src="img/d_key.png" alt="d key" />Throw Tabasco<br /></span>
+         </div>
+         <div class="buttons">
+            <img class="full-btn" id="fullScreenBtn" onclick="fullScreen()" src="img/full.png" alt="" />
+            <img class="audio-img" id="play-audio" onclick="playAudio()" src="img/show_audio.png" alt="" />
+            <img class="audio-img d-none" id="mute-audio" onclick="muteAudio()" src="img/mute_audio.png" alt="" />
+         </div>
+         <div id="mobile-btns">
+            <div class="mobile-btns-left">
+                <img id="btn-left" src="img/left.png" alt="" />
+                <img id="btn-right" src="img/right.png" alt="" />
+
+            </div>
+            <div class="mobile-btns-right">
+                <img id="btn-jump" src="img/up.png" alt="" />
+                <img id="btn-throw" src="img/throw.png" alt="" />
+            </div>
+        </div>
    </body>
 </html>
