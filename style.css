@@ -35,6 +35,9 @@ canvas {
    display: block;
 }
 #canvas-container {
+   display: flex;
+   align-items: center !important;
+   justify-content: center !important;
    position: relative !important;
    width: 100% !important;
    height: 100% !important;
@@ -224,6 +227,7 @@ canvas {
 
 #mobile-btns img {
    height: 50px;
+   margin: 0 20px 5px 20px;
 }
 
 .mobile-btns-left {
@@ -258,6 +262,9 @@ canvas {
    #mobile-btns {
       display: block;
    }
+   .keys {
+      display: none !important;
+   }
 }
 @media only screen and (max-width: 720px) {
    canvas {
@@ -266,9 +273,7 @@ canvas {
    .gameContainer {
       width: 100%;
    }
-   .keys {
-      display: none !important;
-   }
+
    #mobile-btns img {
       height: 40px;
    }
@@ -282,8 +287,20 @@ canvas {
       position: absolute;
       right: 10px;
    }
+   .full-btn {
+      display: none;
+   }
+}
+
+@media only screen and (max-width: 540px) {
+   #mobile-btns {
+      display: none;
+   }
 }
 @media only screen and (max-width: 480px) {
+   body {
+      justify-content: start;
+   }
    .turn-screen {
       display: flex;
    }
@@ -295,5 +312,8 @@ canvas {
    }
    .gameContainer {
       height: 100vh;
+   }
+   .keys {
+      display: none !important;
    }
 }

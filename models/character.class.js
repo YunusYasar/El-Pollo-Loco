@@ -1,9 +1,41 @@
+/**
+ * Represents a character in the game, extending from MovableObject.
+ */
 class Character extends MovableObject {
+   /**
+    * The height of the character.
+    * @type {number}
+    */
    height = 250;
+
+   /**
+    * The y-coordinate for the character's position.
+    * @type {number}
+    */
    y = 180;
+
+   /**
+    * The speed of the character.
+    * @type {number}
+    */
    speed = 8;
+
+   /**
+    * Reference to the game world.
+    * @type {World}
+    */
    world;
+
+   /**
+    * Indicates if the character is walking.
+    * @type {boolean}
+    */
    isWalking = false;
+
+   /**
+    * The offset for collision detection.
+    * @type {{top: number, left: number, right: number, bottom: number}}
+    */
    offset = {
       top: 120,
       left: 20,
@@ -11,6 +43,7 @@ class Character extends MovableObject {
       bottom: 15,
    };
 
+   // Image arrays for different character states
    IMAGES_STANDING = [
       'img/2_character_pepe/1_idle/idle/I-1.png', //
       'img/2_character_pepe/1_idle/idle/I-2.png',
@@ -72,6 +105,10 @@ class Character extends MovableObject {
       'img/2_character_pepe/4_hurt/H-43.png',
    ];
 
+   /**
+    * Creates a Character instance.
+    * Loads various character images and applies gravity and animation.
+    */
    constructor() {
       super().loadImage('img/2_character_pepe/2_walk/W-21.png');
       this.loadImages(this.IMAGES_STANDING);
@@ -84,46 +121,83 @@ class Character extends MovableObject {
       this.animate();
    }
 
+   /**
+    * Handles the character's animation and movement.
+    */
    animate() {
       let lastActionTime = new Date().getTime();
 
       setInterval(() => {
-         const currentTime = new Date().getTime();
-         // playSoundEffect(walking_sound);
-         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-            this.moveRight();
-            this.otherDirection = false;
-            playSoundEffect(walking_sound);
-            lastActionTime = currentTime;
-         } else if (this.world.keyboard.LEFT && this.x > 0) {
-            this.moveLeft();
-            this.otherDirection = true;
-            playSoundEffect(walking_sound);
-            lastActionTime = currentTime;
-         } else if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-            this.jump();
-            playSoundEffect(jumping_sound);
-            lastActionTime = currentTime;
-         }
-
-         this.world.camera_x = -this.x + 100;
+         this.handleMovement();
+         this.updateCameraPosition();
       }, 1000 / 60);
 
       setInterval(() => {
-         const currentTime = new Date().getTime();
+         this.handleCharacterAnimation(lastActionTime);
+      }, 100);
+   }
 
-         if (this.isDead()) {
-            this.playAnimation(this.IMAGES_DEAD);
-         } else if (this.isHurt()) {
-            this.playAnimation(this.IMAGES_HURT);
-         } else if (this.isAboveGround()) {
-            this.playAnimation(this.IMAGES_JUMPING);
-         } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-            this.playAnimation(this.IMAGES_WALKING);
-         } else if (currentTime - lastActionTime >= 3000 && !this.isHurt() && !this.isDead() && !this.isAboveGround()) {
-            // Wenn 2 Sekunden lang nichts passiert, spiele die Idle-Animation
+   /**
+    * Handles the character's movement based on keyboard input.
+    */
+   handleMovement() {
+      const currentTime = new Date().getTime();
+
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+         this.moveRight();
+         this.otherDirection = false;
+         if (!this.isAboveGround()) {
+            this.playSoundAndUpdateTime(walking_sound, currentTime);
+         }
+      } else if (this.world.keyboard.LEFT && this.x > 0) {
+         this.moveLeft();
+         this.otherDirection = true;
+         if (!this.isAboveGround()) {
+            this.playSoundAndUpdateTime(walking_sound, currentTime);
+         }
+      } else if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+         this.jump();
+         this.playSoundAndUpdateTime(jumping_sound, currentTime);
+      }
+   }
+
+   /**
+    * Updates the camera position relative to the character.
+    */
+   updateCameraPosition() {
+      this.world.camera_x = -this.x + 100;
+   }
+
+   /**
+    * Handles the animation of the character based on its current state.
+    * @param {number} lastActionTime - The time of the last action performed.
+    */
+   handleCharacterAnimation(lastActionTime) {
+      const currentTime = new Date().getTime();
+      if (this.isDead()) {
+         this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.isHurt()) {
+         this.playAnimation(this.IMAGES_HURT);
+      } else if (this.isAboveGround()) {
+         this.playAnimation(this.IMAGES_JUMPING);
+      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+         this.lastActionTime = currentTime;
+         this.playAnimation(this.IMAGES_WALKING);
+      } else if (!this.isHurt() && !this.isDead() && !this.isAboveGround()) {
+         this.playAnimation(this.IMAGES_STANDING);
+         if (currentTime - this.lastActionTime >= 2000) {
             this.playAnimation(this.IMAGES_IDLE);
          }
-      }, 50);
+      }
+   }
+
+   /**
+    * Plays a sound effect and updates the last action time.
+    * @param {Audio} sound - The sound effect to play.
+    * @param {number} currentTime - The current time.
+    */
+   playSoundAndUpdateTime(sound, currentTime) {
+      playSoundEffect(sound);
+      this.lastActionTime = currentTime;
    }
 }

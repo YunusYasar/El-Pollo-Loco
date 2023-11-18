@@ -1,10 +1,44 @@
+/**
+ * Represents the endboss in the game, extending from MovableObject.
+ */
 class Endboss extends MovableObject {
+   /**
+    * The height of the endboss.
+    * @type {number}
+    */
    height = 400;
+
+   /**
+    * The width of the endboss.
+    * @type {number}
+    */
    width = 250;
-   y = 50;
-   speed = 20;
+
+   /**
+    * The y-coordinate of the endboss's position.
+    * @type {number}
+    */
+   y = 40;
+
+   /**
+    * The speed of the endboss's movement.
+    * @type {number}
+    */
+   speed = 60;
+
+   /**
+    * Indicates if the endboss is moving.
+    * @type {boolean}
+    */
    isMoving = false;
+
+   /**
+    * The energy level of the endboss.
+    * @type {number}
+    */
    energy = 100;
+
+   // Image arrays for different endboss states
    IMAGES_WALKING = [
       'img/4_enemie_boss_chicken/1_walk/G1.png', //
       'img/4_enemie_boss_chicken/1_walk/G2.png',
@@ -58,6 +92,10 @@ class Endboss extends MovableObject {
       'img/4_enemie_boss_chicken/5_dead/G26.png',
    ];
 
+   /**
+    * The offset for collision detection.
+    * @type {{top: number, left: number, right: number, bottom: number}}
+    */
    offset = {
       top: 50,
       left: 40,
@@ -65,6 +103,10 @@ class Endboss extends MovableObject {
       bottom: 60,
    };
 
+   /**
+    * Creates an Endboss instance.
+    * Loads images for various states and sets initial properties.
+    */
    constructor() {
       super().loadImage(this.IMAGES_WALKING[7]);
       this.loadImages(this.IMAGES_WALKING);
@@ -77,30 +119,58 @@ class Endboss extends MovableObject {
       this.isHurt = false;
    }
 
+   /**
+    * Sets an interval for the endboss's animations and state management.
+    */
    animate() {
       setInterval(() => {
          if (this.energy <= 0) {
-            // Wenn der Endboss keine Energie mehr hat
-            this.playAnimation(this.IMAGES_DEAD);
-            this.isMoving = false; // Stoppt die Bewegung des Endbosses
-         } else if (this.isHurt) {
-            setTimeout(() => {
-               this.playAnimation(this.IMAGES_HURT);
-               setTimeout(() => {
-                  this.playAnimation(this.IMAGES_ATTACKING);
-               }, 200);
-            }, 400);
-            this.isMoving = true;
-            this.isHurt = false;
+            this.handleDeath();
+         } else if (this.isHurt || world.character.x >= 1900) {
+            playSoundEffect(endboss_attack_sound);
+            this.handleHurt();
          } else if (this.isMoving) {
-            // Bewegung nach links, wenn er sich bewegen soll
-            this.playAnimation(this.IMAGES_WALKING);
-            this.moveLeft();
-         } else if (!this.isMoving) {
-            // Wenn der Endboss noch nicht begonnen hat, sich zu bewegen
-
-            this.playAnimation(this.IMAGES_ALERT);
+            this.handleMovement();
+         } else {
+            this.handleIdle();
          }
-      }, 300); // Hauptanimationszyklus
+      }, 200);
+   }
+
+   /**
+    * Handles the death animation of the endboss.
+    */
+   handleDeath() {
+      this.playAnimation(this.IMAGES_DEAD);
+      this.isMoving = false;
+   }
+
+   /**
+    * Handles the hurt animation of the endboss.
+    */
+   handleHurt() {
+      this.isMoving = true;
+      this.isHurt = false;
+      setTimeout(() => {
+         this.playAnimation(this.IMAGES_HURT);
+         setTimeout(() => {
+            this.playAnimation(this.IMAGES_ATTACKING);
+         }, 200);
+      }, 200);
+   }
+
+   /**
+    * Handles the walking animation of the endboss.
+    */
+   handleMovement() {
+      this.playAnimation(this.IMAGES_WALKING);
+      this.moveLeft();
+   }
+
+   /**
+    * Handles the alert/idle animation of the endboss.
+    */
+   handleIdle() {
+      this.playAnimation(this.IMAGES_ALERT);
    }
 }
